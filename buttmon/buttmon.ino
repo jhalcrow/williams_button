@@ -13,6 +13,8 @@ byte mac[] = {
 };
 
 const int SPEAKER_PIN = 6;
+const int BUTTON_PIN = 2;
+
 const char server_host[] = "ournewballandchain.com";
 unsigned int server_port = 8008;
 char log_message[] = "BWAANG";
@@ -60,9 +62,12 @@ void play_song() {
 }
 
 void loop() {
-  play_song();
-  send_message();
-  delay(1000);
+  int buttonState = digitalRead(BUTTON_PIN);
+  if (buttonState == HIGH) {
+    play_song();
+    send_message();
+  }
+ 
 }
 
 void setup() {
