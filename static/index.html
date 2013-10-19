@@ -1,0 +1,17 @@
+<!doctype html>
+<html ng-app="wg2g">
+<head>
+	<title>William's gotta go!</title>
+	<link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css">
+	<script src="//ajax.googleapis.com/ajax/libs/angularjs/1.0.7/angular.min.js"></script>
+	<script src="wgtg.js"></script>
+</head>
+<body>
+	<ul ng-controller="WG2GCtrl">
+		<li ng-repeat="event in events">
+			William had to go at {{event}}
+		</li>
+	</ul>
+</body>
+
+</html>
