@@ -48,7 +48,7 @@ def listen_for_pushes():
             session.add(event)
             session.commit()
             for ws in listeners:
-                ws.send(event.ts.isoformat())
+                ws.send(event.ts.isoformat() + 'Z')
         except:
             session.rollback()
             raise
@@ -74,7 +74,7 @@ def push_notifier(ws):
 def recent_events():
     session = Session()
     recent = session.query(LogEvent).order_by("ts DESC").limit(20)
-    event_str = '\n'.join([r.ts.isoformat() for r in recent])
+    event_str = '\n'.join([r.ts.isoformat() + 'Z' for r in recent])
     session.close()
     return event_str
 
