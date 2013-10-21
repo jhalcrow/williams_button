@@ -12,11 +12,11 @@ wg2g.controller('WG2GCtrl', function WG2GCtrl($scope, $http) {
     $scope.events = [];
 
     $scope.timeSince = '';
-    
+    /*
     ws.onmessage = function(ev) {
         console.log(ev.data);
         add_event(new Date(Date.parse(ev.data) - TZ_OFFSET));
-    }
+    }*/
 
     $http({method: 'GET', url: api_base + '/recentEvents'}).
         success(function(data, status, headers, config) {
