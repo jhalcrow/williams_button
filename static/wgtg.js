@@ -1,7 +1,8 @@
 'use strict';
 
+var api_base = '/wgtg-api';
 var wg2g = angular.module('wg2g', []);
-var ws = new WebSocket('ws://' + window.location.host + '/pushes');
+var ws = new WebSocket('ws://' + window.location.host + api_base + '/pushes');
 var MAX_LEN = 20;
 var TZ_OFFSET = 5 * 60 * 60 * 1000;
 
@@ -17,7 +18,7 @@ wg2g.controller('WG2GCtrl', function WG2GCtrl($scope, $http) {
         add_event(new Date(Date.parse(ev.data) - TZ_OFFSET));
     }
 
-    $http({method: 'GET', url: '/recentEvents'}).
+    $http({method: 'GET', url: api_base + '/recentEvents'}).
         success(function(data, status, headers, config) {
             var evStrings = data.trim().split('\n');
             var evs = [];
@@ -25,6 +26,8 @@ wg2g.controller('WG2GCtrl', function WG2GCtrl($scope, $http) {
                 evs.push(new Date(Date.parse(evStrings[i])- TZ_OFFSET));
             }
             $scope.events = evs;
+
+            init_chart();
         }).
         error(function(data, status, headers, config) {
             console.log("Error getting recent events.\n" + data);
@@ -51,6 +54,31 @@ wg2g.controller('WG2GCtrl', function WG2GCtrl($scope, $http) {
             $scope.$apply();
         }
         
+    }
+
+    function init_chart() {
+        var chart = d3.select("#chart-container").append("svg")
+            .attr("class", "chart")
+            .attr("width", 420).attr("height", 200);
+
+        var deltas = [];
+        for(var i in $scope.events) {
+            if(i > 0) {
+                deltas.push($scope.events[i-1] - $scope.events[i]);
+            }
+        }
+
+        var x = d3.scale.log()
+            .domain([1, d3.max(deltas)])
+            .range([0, 420]);
+
+        chart.selectAll("rect")
+             .data(deltas)
+           .enter().append("rect")
+             .attr("y", function(d, i) { return i * 20; })
+             .attr("width", x)
+             .attr("height", 20);
+
     }
     
     window.setInterval(set_time_since, 1000);
