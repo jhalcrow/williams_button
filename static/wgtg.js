@@ -27,7 +27,7 @@ wg2g.controller('WG2GCtrl', function WG2GCtrl($scope, $http) {
             }
             $scope.events = evs;
 
-            init_chart();
+           // init_chart();
         }).
         error(function(data, status, headers, config) {
             console.log("Error getting recent events.\n" + data);
