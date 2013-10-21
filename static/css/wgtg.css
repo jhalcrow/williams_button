@@ -5,3 +5,8 @@
 #william {
 		width: 90%;
 }
+
+.chart rect {
+	stroke: white;
+	fill: steelblue;
+}	

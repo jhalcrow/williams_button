@@ -4,7 +4,7 @@ var api_base = '/wgtg-api';
 var wg2g = angular.module('wg2g', []);
 var ws = new WebSocket('ws://' + window.location.host + api_base + '/pushes');
 var MAX_LEN = 20;
-var TZ_OFFSET = 5 * 60 * 60 * 1000;
+var TZ_OFFSET = 0; //5 * 60 * 60 * 1000;
 
 wg2g.controller('WG2GCtrl', function WG2GCtrl($scope, $http) {
 
