@@ -23,7 +23,7 @@ wg2g.controller('WG2GCtrl', function WG2GCtrl($scope, $http) {
             var evStrings = data.trim().split('\n');
             var evs = [];
             for(var i in evStrings) {
-                evs.push(new Date(Date.parse(evStrings[i])- TZ_OFFSET));
+                evs.push(new Date(Date.parse(evStrings[i])));
             }
             $scope.events = evs;
 
