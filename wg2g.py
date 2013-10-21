@@ -9,7 +9,7 @@ from sqlalchemy.orm import sessionmaker
 from sqlalchemy import Integer, DateTime, create_engine, desc, Column
 
 Base = declarative_base()
-engine = create_engine('sqlite:///wg2g_log.sqlite', echo=True)
+engine = create_engine('postgres:///wgtg')
 Session = sessionmaker(bind=engine)
 BIND_IP = '0.0.0.0'
 PORT = 8008
@@ -30,7 +30,6 @@ class LogEvent(Base):
 
 Base.metadata.create_all(engine)
 app = Flask(__name__)
-app.debug = True
 sockets = Sockets(app)
 
 listeners = []
@@ -39,9 +38,7 @@ def listen_for_pushes():
     sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
     sock.bind((BIND_IP, PORT))
     while True:
-        print 'listening...'
         data, addr = sock.recvfrom(1024)
-        print 'recieved message:', data, 'from', addr
         session = Session()
         try:
             event = LogEvent()
@@ -55,13 +52,6 @@ def listen_for_pushes():
         finally:
             session.close()
 
-
-
-@sockets.route('/echo')
-def echo_socket(ws):
-    while True:
-        message = ws.receive()
-        ws.send(message + '!!')
 
 @sockets.route('/pushes')
 def push_notifier(ws):
@@ -78,8 +68,6 @@ def recent_events():
     session.close()
     return event_str
 
-@app.route('/')
-def hello():
-    return 'Hello World!'
+
 
 gevent.spawn(listen_for_pushes)
