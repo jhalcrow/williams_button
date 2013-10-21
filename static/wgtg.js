@@ -15,7 +15,7 @@ wg2g.controller('WG2GCtrl', function WG2GCtrl($scope, $http) {
     
     ws.onmessage = function(ev) {
         console.log(ev.data);
-        add_event(new Date(Date.parse(ev.data) - TZ_OFFSET));
+        add_event(new Date(Date.parse(ev.data)));
     }
 
     $http({method: 'GET', url: api_base + '/recentEvents'}).
